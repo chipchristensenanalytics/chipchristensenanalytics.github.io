@@ -1,1 +1,2 @@
-# charcoalcharts.github.io
+# Charcoal Charts
+by Chip
