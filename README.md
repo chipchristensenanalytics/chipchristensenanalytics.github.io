@@ -1,2 +1,2 @@
-# Charcoal Charts
-by Chip
+# The Exploratory Analysts
+data etc.
