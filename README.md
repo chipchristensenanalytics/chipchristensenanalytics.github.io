@@ -1,2 +1,2 @@
-# The Exploratory Analysts
-data etc.
+# Chip Christensen Analytics
+Exploration and Discovery
