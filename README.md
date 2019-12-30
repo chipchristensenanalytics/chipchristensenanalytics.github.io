@@ -1,2 +1,2 @@
 # Chip Christensen Analytics
-Exploration and Discovery
+Exploration. Discovery. Growth.
