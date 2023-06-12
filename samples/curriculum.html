@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body> 
+ <style>
+.link {
+fill: none;
+stroke: #ccc;
+opacity: 0.45;
+stroke-width: 1.5px;
+}
+.node circle {
+stroke: #fff;
+opacity: 0.9;
+stroke-width: 1.5px;
+}
+.node:not(:hover) .nodetext {
+display: none;
+}
+text {
+font: 14px serif;
+opacity: 0.9;
+pointer-events: none;
+}
+</style>
+
+<script src=http://d3js.org/d3.v3.min.js></script>
+
+<script> 
+ var width = 1200
+height = 1200;
+
+var diameter = 1000;
+
+var tree = d3.layout.tree()
+.size([360, diameter / 2 - 120])
+.separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
+
+var diagonal = d3.svg.diagonal.radial()
+.projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
+
+var svg = d3.select("body").append("svg")
+.attr("width", width)
+.attr("height", height)
+.append("g")
+.attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")"); 
+ var root = {"name":"Curriculum","children":[{"name":"Business","children":[{"name":"Real Estate","children":[{"name":"Real Estate Finance"}]}]},{"name":"Humanities","children":[{"name":"Art","children":[{"name":"Chinese Literature"},{"name":"English Composition"},{"name":"English Literature"},{"name":"Introductory Theatre"}]},{"name":"Economics","children":[{"name":"Current Economic Events"},{"name":"Econometrics"},{"name":"Economics of Sports"},{"name":"Macroeconomics"},{"name":"Microeconomics"}]},{"name":"Geography","children":[{"name":"World Regions"}]},{"name":"History","children":[{"name":"Spectator Sports"},{"name":"Western Civilization 1"},{"name":"Western Civilization 2"}]},{"name":"Language","children":[{"name":"Intermediate Spanish 1"},{"name":"Intermediate Spanish 2"},{"name":"Spanish Review"}]},{"name":"Linguistics","children":[{"name":"Language Evolution & Change"},{"name":"Language in Humans"},{"name":"Logic & Formal Reasoning"}]},{"name":"Philosophy","children":[{"name":"Social & Moral Problems"}]}]},{"name":"Mathematics","children":[{"name":"Algebra","children":[{"name":"Abstract Algebra 1"},{"name":"Abstract Algebra 2"},{"name":"Abstract Algebra 3"},{"name":"Linear Algebra"}]},{"name":"Analysis","children":[{"name":"Foundations of Higher Mathematics"},{"name":"Real Analysis 1"},{"name":"Real Analysis 2"},{"name":"Real Analysis 3"},{"name":"Vector Analysis"}]},{"name":"Calculus","children":[{"name":"Functional Calculus"},{"name":"Geometric Calculus"},{"name":"Honors Calculus 1"},{"name":"Honors Calculus 2"},{"name":"Honors Calculus 3"},{"name":"Partial Differential Equations"}]},{"name":"Geometry","children":[{"name":"Advanced Geometry"}]},{"name":"Statistics","children":[{"name":"Data Analysis"},{"name":"Data Management"},{"name":"Experimental Design"},{"name":"Experimental Design 2"},{"name":"Function Estimation"},{"name":"Generalized Linear Models"},{"name":"Mathematical Statistics"},{"name":"Model Theory"},{"name":"Multiple Comparisons"},{"name":"Multivariate Analysis"},{"name":"Nonparametrics 1"},{"name":"Nonparametrics 2"},{"name":"Practical Applications of Statistics"},{"name":"Probability"},{"name":"Regression Analysis 1"},{"name":"Regression Analysis 2"},{"name":"Sampling Methods"},{"name":"Sports Statistics"},{"name":"Statistical Analysis"},{"name":"Statistical Computing"},{"name":"Statistical Consulting"},{"name":"Statistical Inference"},{"name":"Statistical Theory 1"},{"name":"Statistical Theory 2"},{"name":"Statistical Theory 3"},{"name":"Time Series"}]}]},{"name":"Phys Ed","children":[{"name":"Sports","children":[{"name":"Badminton"},{"name":"Racquetball"}]}]},{"name":"Science","children":[{"name":"Anthropology","children":[{"name":"Physical Anthropology"},{"name":"World Pre-History"}]},{"name":"Astronomy","children":[{"name":"Life in the Universe"},{"name":"Solar System"},{"name":"Stars & Galaxies"}]},{"name":"Biology","children":[{"name":"Cancer"},{"name":"Living Organisms"}]},{"name":"Chemistry","children":[{"name":"Elementary Chemistry"}]},{"name":"Physics","children":[{"name":"Electromagnetism & Light"},{"name":"Mechanics & Heat"}]}]},{"name":"Survey","children":[{"name":"MPS","children":[{"name":"Freshman Survey"}]}]}]} ; 
+ var nodes = tree.nodes(root),
+links = tree.links(nodes);
+
+var link = svg.selectAll(".link")
+.data(links)
+.enter().append("path")
+.attr("class", "link")
+.attr("d", diagonal);
+
+var node = svg.selectAll(".node")
+.data(nodes)
+.enter().append("g")
+.attr("class", "node")
+.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+.on("mouseover", mouseover)
+.on("mouseout", mouseout);
+
+node.append("circle")
+.attr("r", 4.5)
+.style("fill", "#bb0000");
+
+node.append("text")
+.attr("dy", ".31em")
+.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+.attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
+.style("fill", "#666666")
+.text(function(d) { return d.name; });
+
+function mouseover() {
+d3.select(this).select("circle").transition()
+.duration(750)
+.attr("r", 9)
+d3.select(this).select("text").transition()
+.duration(750)
+.attr("dy", ".31em")
+.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+.attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
+.style("stroke-width", ".5px")
+.style("font", "26.6px serif")
+.style("opacity", 1);
+}
+
+function mouseout() {
+d3.select(this).select("circle").transition()
+.duration(750)
+.attr("r", 4.5)
+d3.select(this).select("text").transition()
+.duration(750)
+.attr("dy", ".31em")
+.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+.attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
+.style("font", "14px serif")
+.style("opacity", 0.9);
+}
+
+d3.select(self.frameElement).style("height", diameter - 150 + "px");
+
+</script>
+ </body>
